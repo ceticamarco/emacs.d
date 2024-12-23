@@ -7,7 +7,7 @@
 [[./.screenshot.png]]
 
 ** Features
-Tiny Emacs configuration for C++, Python, HTML, CSS, JS development and document editing using Org mode. This configuration
+Tiny Emacs configuration(~100LOC) for Python, Haskell, web(HTML,CSS,JS/TS) development and document editing using Org mode. This configuration
 aims to reproduce the Visual Studio Code experience with as few external packages as possible. Only the following packages will be installed:
 - [[https://github.com/Alexander-Miller/treemacs][treemacs]];  
 - [[https://github.com/emacs-lsp/lsp-mode][LSP mode]];  
@@ -19,19 +19,19 @@ clean interface.
 Furthermore, it also splits /customization settings/ (i.e., settings made within the editor) in a separate file 
 located at =~/emacs.d/custom.el=.
 
-I've added LSP clients for C++, Python and for web development(HTML/CSS/JS/TS). 
+I've added LSP clients for Python, Haskell and for web development(HTML/CSS/JS/TS). 
 If you want to add support for additional languages, you will need to add new /lsp-*/ packages by yourself. 
 Be sure to also install the language server for each language you intend to use.
 
 Since I also use Emacs as a "/task planner/", I've added the following lines to automatically load my personal agenda 
 into ~org-agenda~.
-My Org agendas are mirrored in a Dropbox folder, enabling me to access them directly from my phone using a mobile Org front-end.
+My Org agendas are mirrored in a Dropbox folder, allowing me to access them directly from my phone using a mobile Org front-end.
 #+begin_src lisp :eval no
   (require 'org)
-  (define-key global-map "\C-cl" 'org-store-link)
-  (define-key global-map "\C-ca" 'org-agenda)
+  (define-key global-map (kbd "C-c c l") 'org-store-link)
+  (define-key global-map (kbd "C-c c a") 'org-agenda)
   (setq org-log-done t)
-  (setq org-agenda-files (list "~/Dropbox/agenda/lavoro.org" "~/Dropbox/agenda/personale.org"))
+  (setq org-agenda-files (list "~/Dropbox/agenda/scheduler.org"))
 #+end_src
 
 *NOTE*: I have tested this configuration with the latest Emacs version on macOS. The configuration file is updated and improved on a regular base and should work in any platformed supported by
@@ -39,8 +39,10 @@ Emacs with minimal tweaking.
 
 ** Prerequisites
 Before installing the dotfiles, you will need to install the following dependencies:
-- [[https://clangd.llvm.org/][cland]];
-- [[https://nodejs.org/en][NodeJS]](as well as ~npm~);  
+- [[https://github.com/microsoft/pyright][pyright]];
+- [[https://www.haskell.org/ghcup][GHCup]];
+- [[https://nodejs.org/en][NodeJS]](as well as ~npm~);
+- [[https://www.nerdfonts.com/font-downloads][JetBrains Mono Nerd Font]].
 
 ** Installation
 To Install this configuration copy the ~init.el~ as well as the ~custom.el~ files into the =~/.emacs.d= directory:
@@ -52,21 +54,9 @@ To Install this configuration copy the ~init.el~ as well as the ~custom.el~ file
 After that, open up Emacs and wait until it finishes to download, install and compile all the external packages. During the installation you may see
 some warning messages on a new buffer, you can safely ignore them. You will not be bothered after the set up process will be completed.
 
-** LSP: Python
-The first time you open up a Python project, LSP will complain that it cannot find any suitable LSP server. To solve it, you can type ~pyright~ when prompted
-and then hit enter. Emacs will automatically download and install the language server all by itself. As soon as it has finished, you are good to go.
-
-** LSP: C++
-When working with C++ projects, you will need to instruct the language server about the C++ version you are currently using. To do so, create a new text file
-called ~compile_flags.txt~ in your C++ project directory with the following content
-#+begin_src txt :eval no
-  -std=c++2a
-#+end_src
-
-You can add as many compile flags as you what.
-
 ** LSP: HTML/CSS/JS
-To install language servers for web development, simply issue the following commands within Emacs:
+Language servers for web development can be installed directly within Emacs. To do that, issue the following commands:
+
 #+begin_src txt :eval no
   M-x lsp-install-server <RET> html-ls
   M-x lsp-install-server <RET> css-ls
@@ -74,12 +64,12 @@ To install language servers for web development, simply issue the following comm
 #+end_src
 
 ** Keyboard shortcuts
-You can also use the following shortcuts to quickly insert boilerplate code, document templates and text snippets inside your document: 
+You can also use the following shortcuts to quickly insert boilerplate code, document templates and text snippets inside your document:
 
 | Shortcut  | Meaning                                                     |
 |-----------+-------------------------------------------------------------|
-| ~C-c t p~ | Initialize a Python project                                 |
-| ~C-c t c~ | Initialize a C++ project                                    |
-| ~C-c t t~ | Initialize an Org project for an A5 LaTeX document          |
-| ~C-c t s~ | Include a /codeblock snippet/ with dynamic language loading |
+| ~C-c c s~ | Include a /codeblock snippet/ with dynamic language loading |
+| ~C-c c d~ | Close *ALL* buffers                                         |
+| ~C-c c t~ | Toggle Treemacs                                             |
+
 
